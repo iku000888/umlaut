@@ -106,6 +106,12 @@
       (merge out {:description (:value docs)})
       out)))
 
+(defn- check-add-implements [info out]
+  (let [parents (attr-to-parents info)]
+    (if (seq parents)
+      (merge out {:implements parents})
+      out)))
+
 (defn- check-add-deprecation [node out]
   (let [deprecation (first (annotations-by-space :deprecation (node :annotations)))]
     (if deprecation
@@ -115,8 +121,8 @@
 (defn- gen-node-type [node]
   (when (= (first node) :type)
     (let [info (second node)]
-      (->> {:fields (process-declaration info)
-            :implements (attr-to-parents info)}
+      (->> {:fields (process-declaration info)}
+           (check-add-implements info)
            (check-add-documentation info)
            (assoc {} (keyword (info :id)))))))
 

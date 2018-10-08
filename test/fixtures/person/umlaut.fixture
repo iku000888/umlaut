@@ -1,5 +1,16 @@
 {:nodes
- {"Person"
+ {"Profession"
+  [:type
+   {:id "Profession",
+    :fields
+    [{:id "name",
+      :return {:type-id "String", :arity [1 1], :required true},
+      :params [],
+      :params? false,
+      :field-annotations {}}],
+    :parents [],
+    :annotations []}],
+  "Person"
   [:interface
    {:id "Person",
     :fields
@@ -163,17 +174,6 @@
      {:space "lang/graphql", :key "identifier", :value "union"}
      {:space :documentation,
       :key "",
-      :value "This is an union type"}]}],
-  "Profession"
-  [:type
-   {:id "Profession",
-    :fields
-    [{:id "name",
-      :return {:type-id "String", :arity [1 1], :required true},
-      :params [],
-      :params? false,
-      :field-annotations {}}],
-    :parents [],
-    :annotations []}]},
+      :value "This is an union type"}]}]},
  :diagrams
  {"fixture" [:diagram {:id "fixture", :groups [["QueryRoot" "!"]]}]}}
