@@ -12,7 +12,6 @@
 ;; code required a manual fixture fix.
 
 (def ^:private base "test/fixtures/person/")
-(def ^:private umlaut-files [(str base "person.umlaut") (str base "profession.umlaut")])
 
 (defn- gen-umlaut [filename files]
   (save-map-to-file filename (umlaut.core/run files)))
@@ -28,7 +27,7 @@
   (save-string-to-file filename (graphql/gen files)))
 
 (defn gen-all []
-  (gen-umlaut (str base "umlaut.fixture") umlaut-files)
-  (gen-dotstring (str base "dot.fixture") umlaut-files)
-  (gen-lacinia (str base "lacinia.fixture") umlaut-files)
-  (gen-graphql (str base "graphql.fixture") umlaut-files))
+  (gen-umlaut (str base "umlaut.fixture") base)
+  (gen-dotstring (str base "dot.fixture") base)
+  (gen-lacinia (str base "lacinia.fixture") base)
+  (gen-graphql (str base "graphql.fixture") base))
