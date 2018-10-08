@@ -1,5 +1,7 @@
 {:objects
- {:Employee
+ {:Profession
+  {:fields {:name {:type (non-null String), :isDeprecated false}}},
+  :Employee
   {:fields
    {:salary {:type (non-null Float), :isDeprecated false},
     :status
@@ -22,10 +24,7 @@
     {:type (non-null String),
      :description "You can also document fields inside the interface",
      :isDeprecated false}},
-   :implements [:Person]},
-  :Profession
-  {:fields {:name {:type (non-null String), :isDeprecated false}},
-   :implements []}},
+   :implements [:Person]}},
  :enums
  {:RelationshipStatus
   {:values ["Single" "Married"],
