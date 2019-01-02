@@ -15,14 +15,19 @@
        (filter #(string/ends-with? (.getPath ^java.io.File %)
                                    ".umlaut"))))
 
+(defn- build-umlaut-structure [umlaut-files]
+  (reduce
+    (fn [acc file]
+      (let [parsed (parse (slurp file))]
+        {:nodes (merge (:nodes acc) (:nodes parsed))
+         :diagrams (merge (:diagrams acc) (:diagrams parsed))})) {}
+    umlaut-files))
+
 (defn- read-parse [path]
   "Read all the umlaut files from a folder and parse its content"
   (->> path
        umlaut-files
-       (reduce (fn [acc file]
-                 (let [parsed (parse (slurp file))]
-                   {:nodes (merge (:nodes acc) (:nodes parsed))
-                    :diagrams (merge (:diagrams acc) (:diagrams parsed))})) {})))
+       build-umlaut-structure))
 
 (defn- get-all-fields
   [parsed]
@@ -70,16 +75,19 @@
       (throw (Exception. (format-type-errors result)))
       parsed)))
 
-(defn- read-folder [path]
+(defn- read-files-or-folder [files-or-folder]
   "Validate all the umlaut code parsed from a folder"
-  (-> (read-parse path)
-      check-throw-spec-error
-      check-throw-type-error))
+  (if (string? files-or-folder)
+    (read-parse files-or-folder)               ;; Received a folder path
+    (build-umlaut-structure files-or-folder))) ;; Received a list of io/resources
 
 (defn run
-  "Parses, validates, and transform the umlaut files from a folder"
-  [path]
-  (read-folder path))
+  "Parses, validates, and transform the umlaut files from a folder."
+  [files-or-folder]
+  (-> files-or-folder  ;; String with the folder name or a list of io/resources
+      read-files-or-folder
+      check-throw-spec-error
+      check-throw-type-error))
 
 (s/fdef run
   :ret ::model/namespaces)
